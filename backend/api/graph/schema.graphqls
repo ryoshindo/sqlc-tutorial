@@ -1,0 +1,18 @@
+type Query {
+  viewer: Account!
+}
+
+type Account {
+  id: String!
+  email: String!
+  userName: String!
+}
+
+input SigninInput {
+  email: String!
+  password: String!
+}
+
+type Mutation {
+  signin(input: SigninInput!): Boolean!
+}
