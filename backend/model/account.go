@@ -1,10 +1,12 @@
 package model
 
+import "time"
+
 type Account struct {
 	ID        string
 	Email     string
-	CreatedAt string
-	UpdatedAt string
+	CreatedAt time.Time
+	UpdatedAt time.Time
 }
 
 func NewAccount() *Account {

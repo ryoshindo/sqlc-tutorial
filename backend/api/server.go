@@ -16,6 +16,7 @@ import (
 	"github.com/ryoshindo/sqlc-tutorial/backend/api/graph/generated"
 	"github.com/ryoshindo/sqlc-tutorial/backend/api/graph/session"
 	"github.com/ryoshindo/sqlc-tutorial/backend/db"
+	generatedsqlc "github.com/ryoshindo/sqlc-tutorial/backend/model/sqlc"
 	repo "github.com/ryoshindo/sqlc-tutorial/backend/repository/sqlc"
 )
 
@@ -33,6 +34,9 @@ func main() {
 	if err != nil {
 		log.Fatalln(err)
 	}
+	defer d.Close()
+
+	q := generatedsqlc.New(d)
 
 	r.Use(cors.New(cors.Options{
 		AllowedOrigins:   []string{"http://localhost:3000", "http://localhost:8080"}, // FIXME
@@ -41,7 +45,7 @@ func main() {
 	}).Handler)
 	r.Use(middleware.Logger)
 	r.Use(newSessionMiddleware())
-	r.Use(dbContextMiddleware(d))
+	r.Use(dbContextMiddleware(q))
 
 	schemaConfig := generated.Config{Resolvers: newResolver()}
 	srv := handler.NewDefaultServer(generated.NewExecutableSchema(schemaConfig))
@@ -66,11 +70,11 @@ func newSessionMiddleware() func(http.Handler) http.Handler {
 	return session.Middleware(repo.NewAccountRepository(), repo.NewSessionRepository())
 }
 
-func dbContextMiddleware(d *sql.DB) func(http.Handler) http.Handler {
+func dbContextMiddleware(q *generatedsqlc.Queries) func(http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			ctx := r.Context()
-			ctx = db.Set(ctx, d)
+			ctx = db.Set(ctx, q)
 			next.ServeHTTP(w, r.WithContext(ctx))
 		})
 	}
