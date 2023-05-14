@@ -1,11 +1,7 @@
-import { Button } from "@mui/material";
+import Signin from "./Signin";
 
 const Page = () => {
-  return (
-    <>
-      <Button variant="contained">Hello World</Button>
-    </>
-  );
+  return <Signin />;
 };
 
 export default Page;
