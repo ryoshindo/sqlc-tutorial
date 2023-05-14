@@ -8,6 +8,7 @@ require (
 	github.com/go-chi/chi v1.5.4
 	github.com/go-chi/cors v1.2.1
 	github.com/kyleconroy/sqlc v1.18.0
+	github.com/lib/pq v1.10.9
 	github.com/oklog/ulid/v2 v2.1.0
 	github.com/rubenv/sql-migrate v1.4.0
 	github.com/vektah/gqlparser/v2 v2.5.1
