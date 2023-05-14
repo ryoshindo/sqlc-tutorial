@@ -7,7 +7,8 @@ import (
 )
 
 type AccountRepository interface {
-	FindById(ctx context.Context, id string) (*model.Account, error)
+	FindByID(ctx context.Context, id string) (*model.Account, error)
 	FindByEmail(ctx context.Context, email string) (*model.Account, error)
-	FindPasswordsByAccountId(ctx context.Context, accountId string) ([]model.AccountPassword, error)
+	FindPasswordsByAccountID(ctx context.Context, accountId string) ([]model.AccountPassword, error)
+	Create(ctx context.Context, account *model.Account) error
 }

@@ -23,3 +23,12 @@ type AccountPassword struct {
 	CreatedAt time.Time
 	UpdatedAt time.Time
 }
+
+type Session struct {
+	ID        string
+	AccountID string
+	Token     string
+	ExpiresAt time.Time
+	CreatedAt time.Time
+	UpdatedAt time.Time
+}

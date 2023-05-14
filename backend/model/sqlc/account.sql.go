@@ -7,7 +7,29 @@ package generatedsqlc
 
 import (
 	"context"
+	"time"
 )
+
+const createAccount = `-- name: CreateAccount :exec
+INSERT INTO accounts (id, email, created_at, updated_at) VALUES ($1, $2, $3, $4)
+`
+
+type CreateAccountParams struct {
+	ID        string
+	Email     string
+	CreatedAt time.Time
+	UpdatedAt time.Time
+}
+
+func (q *Queries) CreateAccount(ctx context.Context, arg CreateAccountParams) error {
+	_, err := q.db.ExecContext(ctx, createAccount,
+		arg.ID,
+		arg.Email,
+		arg.CreatedAt,
+		arg.UpdatedAt,
+	)
+	return err
+}
 
 const findByEmail = `-- name: FindByEmail :one
 SELECT id, email, created_at, updated_at FROM accounts WHERE email = $1 LIMIT 1

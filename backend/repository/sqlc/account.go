@@ -12,7 +12,7 @@ func NewAccountRepository() *AccountRepository {
 	return &AccountRepository{}
 }
 
-func (r *AccountRepository) FindById(ctx context.Context, id string) (*model.Account, error) {
+func (r *AccountRepository) FindByID(ctx context.Context, id string) (*model.Account, error) {
 	panic("not implemented")
 }
 
@@ -20,6 +20,10 @@ func (r *AccountRepository) FindByEmail(ctx context.Context, email string) (*mod
 	panic("not implemented")
 }
 
-func (r *AccountRepository) FindPasswordsByAccountId(ctx context.Context, accountId string) ([]model.AccountPassword, error) {
+func (r *AccountRepository) FindPasswordsByAccountID(ctx context.Context, accountId string) ([]model.AccountPassword, error) {
+	panic("not implemented")
+}
+
+func (r *AccountRepository) Create(ctx context.Context, account *model.Account) error {
 	panic("not implemented")
 }

@@ -1,0 +1,16 @@
+-- +migrate Up
+CREATE TABLE sessions (
+    id VARCHAR(32) PRIMARY KEY,
+    account_id VARCHAR(32) NOT NULL REFERENCES accounts ON UPDATE NO ACTION ON DELETE CASCADE,
+    token VARCHAR(255) NOT NULL,
+    expires_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
+    updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL
+);
+
+CREATE UNIQUE INDEX ON sessions(token);
+
+CREATE INDEX ON sessions(account_id);
+
+-- +migrate Down
+DROP TABLE sessions;

@@ -12,6 +12,7 @@ import (
 	"github.com/go-chi/cors"
 	"github.com/ryoshindo/sqlc-tutorial/backend/api/graph"
 	"github.com/ryoshindo/sqlc-tutorial/backend/api/graph/generated"
+	"github.com/ryoshindo/sqlc-tutorial/backend/api/graph/session"
 	repo "github.com/ryoshindo/sqlc-tutorial/backend/repository/sqlc"
 )
 
@@ -30,6 +31,7 @@ func main() {
 		Debug:            true,
 	}).Handler)
 	r.Use(middleware.Logger)
+	r.Use(newSessionMiddleware())
 
 	schemaConfig := generated.Config{Resolvers: newResolver()}
 	srv := handler.NewDefaultServer(generated.NewExecutableSchema(schemaConfig))
@@ -44,5 +46,12 @@ func main() {
 }
 
 func newResolver() *graph.Resolver {
-	return graph.NewResolver(repo.NewAccountRepository())
+	return graph.NewResolver(
+		repo.NewAccountRepository(),
+		repo.NewSessionRepository(),
+	)
+}
+
+func newSessionMiddleware() func(http.Handler) http.Handler {
+	return session.Middleware(repo.NewAccountRepository(), repo.NewSessionRepository())
 }

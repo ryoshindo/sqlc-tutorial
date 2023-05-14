@@ -1,17 +1,14 @@
 package model
 
 type Account struct {
-	Id        string
+	ID        string
 	Email     string
 	CreatedAt string
 	UpdatedAt string
 }
 
-type AccountPassword struct {
-	Id        string
-	AccountId string
-	Hash      []byte
-	Salt      []byte
-	CreatedAt string
-	UpdatedAt string
+func NewAccount() *Account {
+	return &Account{
+		ID: NewUlidString(),
+	}
 }
